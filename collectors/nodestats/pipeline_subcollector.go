@@ -105,18 +105,20 @@ func (collector *PipelineSubcollector) Collect(pipeStats *responses.SinglePipeli
 
 	// Pipeline plugins metrics
 	for _, input := range pipeStats.Plugins.Inputs {
-		log.Printf("collecting pipeline plugin stats for pipeline %s > input %s", pipelineID, input.Name)
+		log.Printf("collecting pipeline plugin stats for pipeline %s :: input %s", pipelineID, input.Name)
 		ch <- prometheus.MustNewConstMetric(collector.InputsEventsOut, prometheus.CounterValue, float64(input.Events.Out), pipelineID, input.Name)
 		ch <- prometheus.MustNewConstMetric(collector.InputsEventsQueuePushDuration, prometheus.GaugeValue, float64(input.Events.QueuePushDurationInMillis), pipelineID, input.Name)
 	}
 
 	for _, filter := range pipeStats.Plugins.Filters {
+		log.Printf("collecting pipeline plugin stats for pipeline %s :: filter %s", pipelineID, filter.Name)
 		ch <- prometheus.MustNewConstMetric(collector.FiltersEventsIn, prometheus.CounterValue, float64(filter.Events.In), pipelineID, filter.Name)
 		ch <- prometheus.MustNewConstMetric(collector.FiltersEventsOut, prometheus.CounterValue, float64(filter.Events.Out), pipelineID, filter.Name)
 		ch <- prometheus.MustNewConstMetric(collector.FiltersEventsDuration, prometheus.GaugeValue, float64(filter.Events.DurationInMillis), pipelineID, filter.Name)
 	}
 
 	for _, output := range pipeStats.Plugins.Outputs {
+		log.Printf("collecting pipeline plugin stats for pipeline %s :: output %s", pipelineID, output.Name)
 		ch <- prometheus.MustNewConstMetric(collector.OutputsEventsIn, prometheus.CounterValue, float64(output.Events.In), pipelineID, output.Name)
 		ch <- prometheus.MustNewConstMetric(collector.OutputsEventsOut, prometheus.CounterValue, float64(output.Events.Out), pipelineID, output.Name)
 		ch <- prometheus.MustNewConstMetric(collector.OutputsEventsDuration, prometheus.GaugeValue, float64(output.Events.DurationInMillis), pipelineID, output.Name)
