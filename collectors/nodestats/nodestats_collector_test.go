@@ -78,6 +78,8 @@ func TestCollectNotNil(t *testing.T) {
 		"logstash_stats_pipeline_queue_max_size_in_bytes",
 		"logstash_stats_pipeline_reloads_failures",
 		"logstash_stats_pipeline_reloads_successes",
+		"logstash_stats_pipeline_reloads_last_success_timestamp",
+		"logstash_stats_pipeline_reloads_last_failure_timestamp",
 		"logstash_stats_process_cpu_percent",
 		"logstash_stats_process_cpu_total_millis",
 		"logstash_stats_process_cpu_load_average_1m",
@@ -145,4 +147,63 @@ func TestCollectError(t *testing.T) {
 	if err == nil {
 		t.Error("Expected err not to be nil")
 	}
+}
+
+func TestIsPipelineHealthy(t *testing.T) {
+	collector := NewPipelineSubcollector()
+	tests := []struct {
+		name     string
+		stats    responses.PipelineReloadResponse
+		expected float64
+	}{
+		{
+			name: "Both timestamps nil",
+			stats: responses.PipelineReloadResponse{
+				LastFailureTimestamp:  nil,
+				LastSuccessTimestamp: nil,
+			},
+			expected: 1,
+		},
+		{
+			name: "Failure timestamp set",
+			stats: responses.PipelineReloadResponse{
+				LastFailureTimestamp:  &time.Time{},
+				LastSuccessTimestamp: nil,
+			},
+			expected: 0,
+		},
+		{
+			name: "Success timestamp earlier than failure timestamp",
+			stats: responses.PipelineReloadResponse{
+				LastFailureTimestamp:  &time.Time{},
+				LastSuccessTimestamp: func() *time.Time { t := time.Time{}.Add(-1 * time.Hour); return &t }(),
+			},
+			expected: 0,
+		},
+		{
+			name: "Success timestamp later than failure timestamp",
+			stats: responses.PipelineReloadResponse{
+				LastFailureTimestamp:  &time.Time{},
+				LastSuccessTimestamp: func() *time.Time { t := time.Time{}.Add(1 * time.Hour); return &t }(),
+			},
+			expected: 1,
+		},
+		{
+			name: "Missing fields, assume healthy",
+			stats: responses.PipelineReloadResponse{},
+			expected: 1,
+		},
+	}
+
+	// Run test cases
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := collector.isPipelineHealthy(tt.stats)
+			if result != tt.expected {
+				t.Errorf("Expected %v, but got %v", tt.expected, result)
+				return
+			}
+		})
+	}
+
 }
