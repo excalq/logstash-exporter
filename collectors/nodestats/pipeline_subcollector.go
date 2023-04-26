@@ -79,15 +79,12 @@ func NewPipelineSubcollector() *PipelineSubcollector {
 func (collector *PipelineSubcollector) Collect(pipeStats *responses.SinglePipelineResponse, pipelineID string, ch chan<- prometheus.Metric) {
 	collectingStart := time.Now()
 	log.Printf("collecting pipeline stats for pipeline %s", pipelineID)
-	// TODO: The Event durations may be better as histogram observations
 
 	ch <- prometheus.MustNewConstMetric(collector.EventsOut, prometheus.CounterValue, float64(pipeStats.Events.Out), pipelineID)
 	ch <- prometheus.MustNewConstMetric(collector.EventsFiltered, prometheus.CounterValue, float64(pipeStats.Events.Filtered), pipelineID)
 	ch <- prometheus.MustNewConstMetric(collector.EventsIn, prometheus.CounterValue, float64(pipeStats.Events.In), pipelineID)
 	ch <- prometheus.MustNewConstMetric(collector.EventsDuration, prometheus.CounterValue, float64(pipeStats.Events.DurationInMillis), pipelineID)
 	ch <- prometheus.MustNewConstMetric(collector.EventsQueuePushDuration, prometheus.GaugeValue, float64(pipeStats.Events.QueuePushDurationInMillis), pipelineID)
-
-	ch <- prometheus.MustNewConstMetric(collector.Up, prometheus.GaugeValue, float64(collector.isPipelineHealthy(pipeStats.Reloads)), pipelineID)
 
 	ch <- prometheus.MustNewConstMetric(collector.Up, prometheus.GaugeValue, float64(collector.isPipelineHealthy(pipeStats.Reloads)), pipelineID)
 
