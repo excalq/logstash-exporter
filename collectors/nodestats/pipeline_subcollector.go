@@ -46,33 +46,33 @@ type PipelineSubcollector struct {
 func NewPipelineSubcollector() *PipelineSubcollector {
 	descHelper := prometheus_helper.SimpleDescHelper{Namespace: namespace, Subsystem: fmt.Sprintf("%s_pipeline", subsystem)}
 	return &PipelineSubcollector{
-		Up:                      descHelper.NewDescWithHelpAndLabels("up", "Whether the pipeline is up or not.", "pipeline_id"),
-		EventsOut:               descHelper.NewDescWithHelpAndLabels("events_out", "Number of events that have been processed by this pipeline.", "pipeline_id"),
-		EventsFiltered:          descHelper.NewDescWithHelpAndLabels("events_filtered", "Number of events that have been filtered out by this pipeline.", "pipeline_id"),
-		EventsIn:                descHelper.NewDescWithHelpAndLabels("events_in", "Number of events that have been inputted into this pipeline.", "pipeline_id"),
-		EventsDuration:          descHelper.NewDescWithHelpAndLabels("events_duration", "Time needed to process event.", "pipeline_id"),
-		EventsQueuePushDuration: descHelper.NewDescWithHelpAndLabels("events_queue_push_duration", "Time needed to push event to queue.", "pipeline_id"),
+		Up:                      descHelper.NewDescWithHelpAndLabels("up", "Whether the pipeline is up or not.", "pipeline"),
+		EventsOut:               descHelper.NewDescWithHelpAndLabels("events_out", "Number of events that have been processed by this pipeline.", "pipeline"),
+		EventsFiltered:          descHelper.NewDescWithHelpAndLabels("events_filtered", "Number of events that have been filtered out by this pipeline.", "pipeline"),
+		EventsIn:                descHelper.NewDescWithHelpAndLabels("events_in", "Number of events that have been inputted into this pipeline.", "pipeline"),
+		EventsDuration:          descHelper.NewDescWithHelpAndLabels("events_duration", "Time needed to process event.", "pipeline"),
+		EventsQueuePushDuration: descHelper.NewDescWithHelpAndLabels("events_queue_push_duration", "Time needed to push event to queue.", "pipeline"),
 
-		ReloadsSuccesses: descHelper.NewDescWithHelpAndLabels("reloads_successes", "Number of successful pipeline reloads.", "pipeline_id"),
-		ReloadsFailures:  descHelper.NewDescWithHelpAndLabels("reloads_failures", "Number of failed pipeline reloads.", "pipeline_id"),
+		ReloadsSuccesses: descHelper.NewDescWithHelpAndLabels("reloads_successes", "Number of successful pipeline reloads.", "pipeline"),
+		ReloadsFailures:  descHelper.NewDescWithHelpAndLabels("reloads_failures", "Number of failed pipeline reloads.", "pipeline"),
 
-		ReloadsLastSuccessTimestamp: descHelper.NewDescWithHelpAndLabels("reloads_last_success_timestamp", "Timestamp of last successful pipeline reload.", "pipeline_id"),
-		ReloadsLastFailureTimestamp: descHelper.NewDescWithHelpAndLabels("reloads_last_failure_timestamp", "Timestamp of last failed pipeline reload.", "pipeline_id"),
+		ReloadsLastSuccessTimestamp: descHelper.NewDescWithHelpAndLabels("reloads_last_success_timestamp", "Timestamp of last successful pipeline reload.", "pipeline"),
+		ReloadsLastFailureTimestamp: descHelper.NewDescWithHelpAndLabels("reloads_last_failure_timestamp", "Timestamp of last failed pipeline reload.", "pipeline"),
 
-		QueueEventsCount:         descHelper.NewDescWithHelpAndLabels("queue_events_count", "Number of events in the queue.", "pipeline_id"),
-		QueueEventsQueueSize:     descHelper.NewDescWithHelpAndLabels("queue_events_queue_size", "Number of events that the queue can accommodate", "pipeline_id"),
-		QueueMaxQueueSizeInBytes: descHelper.NewDescWithHelpAndLabels("queue_max_size_in_bytes", "Maximum size of given queue in bytes.", "pipeline_id"),
+		QueueEventsCount:         descHelper.NewDescWithHelpAndLabels("queue_events_count", "Number of events in the queue.", "pipeline"),
+		QueueEventsQueueSize:     descHelper.NewDescWithHelpAndLabels("queue_events_queue_size", "Number of events that the queue can accommodate", "pipeline"),
+		QueueMaxQueueSizeInBytes: descHelper.NewDescWithHelpAndLabels("queue_max_size_in_bytes", "Maximum size of given queue in bytes.", "pipeline"),
 
-		InputsEventsOut:               descHelper.NewDescWithHelpAndLabels("inputs_events_out", "Number of input events that have been processed by this pipeline.", "pipeline_id", "input", "plugin_id"),
-		InputsEventsQueuePushDuration: descHelper.NewDescWithHelpAndLabels("inputs_events_duration", "Time spent processing input events.", "pipeline_id", "input", "plugin_id"),
+		InputsEventsOut:               descHelper.NewDescWithHelpAndLabels("inputs_events_out", "Number of input events that have been processed by this pipeline.", "pipeline", "input", "plugin_id"),
+		InputsEventsQueuePushDuration: descHelper.NewDescWithHelpAndLabels("inputs_events_duration", "Time spent processing input events.", "pipeline", "input", "plugin_id"),
 
-		FiltersEventsIn:       descHelper.NewDescWithHelpAndLabels("filters_events_in", "Number of filter events that have been processed by this pipeline.", "pipeline_id", "filter", "plugin_id"),
-		FiltersEventsOut:      descHelper.NewDescWithHelpAndLabels("filters_events_out", "Number of filter events that have been processed by this pipeline.", "pipeline_id", "filter", "plugin_id"),
-		FiltersEventsDuration: descHelper.NewDescWithHelpAndLabels("filters_events_duration", "Time spent processing filter events", "pipeline_id", "filter", "plugin_id"),
+		FiltersEventsIn:       descHelper.NewDescWithHelpAndLabels("filters_events_in", "Number of filter events that have been processed by this pipeline.", "pipeline", "filter", "plugin_id"),
+		FiltersEventsOut:      descHelper.NewDescWithHelpAndLabels("filters_events_out", "Number of filter events that have been processed by this pipeline.", "pipeline", "filter", "plugin_id"),
+		FiltersEventsDuration: descHelper.NewDescWithHelpAndLabels("filters_events_duration", "Time spent processing filter events", "pipeline", "filter", "plugin_id"),
 
-		OutputsEventsIn:       descHelper.NewDescWithHelpAndLabels("outputs_events_in", "Number of output events that have been processed by this pipeline.", "pipeline_id", "output", "plugin_id"),
-		OutputsEventsOut:      descHelper.NewDescWithHelpAndLabels("outputs_events_out", "Number of output events that have been processed by this pipeline.", "pipeline_id", "output", "plugin_id"),
-		OutputsEventsDuration: descHelper.NewDescWithHelpAndLabels("outputs_events_duration", "Time spent processing output events", "pipeline_id", "output", "plugin_id"),
+		OutputsEventsIn:       descHelper.NewDescWithHelpAndLabels("outputs_events_in", "Number of output events that have been processed by this pipeline.", "pipeline", "output", "plugin_id"),
+		OutputsEventsOut:      descHelper.NewDescWithHelpAndLabels("outputs_events_out", "Number of output events that have been processed by this pipeline.", "pipeline", "output", "plugin_id"),
+		OutputsEventsDuration: descHelper.NewDescWithHelpAndLabels("outputs_events_duration", "Time spent processing output events", "pipeline", "output", "plugin_id"),
 	}
 }
 
